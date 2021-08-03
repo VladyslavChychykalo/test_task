@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useFormik } from "formik";
 import { StyledOverlay, StyledModal } from './StyledModalWindow'
 import { modalInputArray } from '../../helpers/inputsArray'
-import Input from "../shared/Input";
+import { Input, Title } from '../shared'
 
 const ModalWindow: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
   useEffect(() => {
@@ -43,7 +43,7 @@ const ModalWindow: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
   return (
     <StyledOverlay ref={overlayRef} onClick={handleOverlayClick}>
       <StyledModal>
-        <h4>Add user</h4>
+        <Title>Add user</Title>
         <p>Check all fields before click on Save button</p>
         <form autoComplete="off" onSubmit={handleSubmit}>
           <div>
@@ -61,6 +61,8 @@ const ModalWindow: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
               />
             ))}
           </div>
+
+          <button type="submit">Create</button>
         </form>
       </StyledModal>
     </StyledOverlay>

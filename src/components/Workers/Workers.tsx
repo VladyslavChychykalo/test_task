@@ -5,7 +5,11 @@ const Workers: React.FC<{ tableElements: TableElementsI[], openModal: () => void
   openModal
 }) => {
   return (
-    <div>
+    <div style={{
+      borderBottom: "1px solid black",
+      padding: '24px',
+      borderRadius: "5px",
+    }}>
       <h3>Workers</h3>
       <table>
         <thead>
@@ -33,7 +37,7 @@ const Workers: React.FC<{ tableElements: TableElementsI[], openModal: () => void
           )}
         </tbody>
       </table>
-      <button onClick={openModal}>Add</button>
+      <button style={{ display: 'block', marginLeft: 'auto', marginTop: '30px' }} onClick={openModal}>Add</button>
     </div>
   );
 };

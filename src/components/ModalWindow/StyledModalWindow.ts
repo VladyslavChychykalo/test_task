@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 
 export const StyledOverlay = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
   background-color: #33373ac5;
@@ -10,8 +13,10 @@ export const StyledOverlay = styled.div`
 `
 
 export const StyledModal = styled.div`
-    max-width: 400px;
-    /* height: auto; */
-    height: 200px;
+    padding: 0 30px 30px 30px;
+    width: 100%;
+    max-width: 700px;
+    height: auto;
     background: #fff;
+    border-radius: 10px;
 `

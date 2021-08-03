@@ -1,6 +1,6 @@
 import GeneralInfo from "../components/GeneralInfo";
 import Workers from "../components/Workers";
-import ModalWindow  from "../components/ModalWindow";
+import ModalWindow from "../components/ModalWindow";
 import { useState } from "react";
 import { TableElementsI } from '../helpers/interfaces'
 
@@ -33,15 +33,12 @@ const App: React.FC = () => {
       style={{
         maxWidth: "912px",
         margin: "0 auto",
-        padding: "24px",
-        border: "1px solid black",
-        borderRadius: "5px",
       }}
     >
       <GeneralInfo bindSubmitForm={bindSubmitForm} />
       <Workers tableElements={tableElements} openModal={() => setModal(true)} />
       {isModalOpen && <ModalWindow closeModal={() => setModal(false)} />}
-      <button type="button" onClick={handleSubmitMyForm}>
+      <button style={{ display: 'block', margin: '0 auto', marginTop: '20px' }} type="button" onClick={handleSubmitMyForm}>
         Check form
       </button>
     </div>
