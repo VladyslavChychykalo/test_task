@@ -17,8 +17,11 @@ export const modalInputArray = [
         label: "First Name",
     },
     { name: "lastName", type: "text", label: "Last Name" },
-    //   { name: "primaryPhone", type: "tel", label: "Primary phone" },
-    //   { name: "secondaryPhone", type: "tel", label: "Secondary phone" },
+    { name: "profession", label: "Profession" },
     { name: "date", type: "date", label: "Birthday" },
-    { name: "experience", type: "number", label: "Work Experience (years)" },
+    // { name: "experience", type: "number", label: "Work Experience (years)" },
 ]
+
+export const conditionInput = { name: "experience", type: "number", label: "Work Experience (years)" }
+
+export const radioArray = [{ type: 'radio', name: '', text: '' }]

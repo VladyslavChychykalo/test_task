@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { useFormik } from "formik";
 import { StyledOverlay, StyledModal } from './StyledModalWindow'
-import { modalInputArray } from '../../helpers/inputsArray'
-import { Input, Title } from '../shared'
+import { modalInputArray, conditionInput } from '../../helpers/inputsArray'
+import { Input, Title, Select } from '../shared'
 
 const ModalWindow: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
   useEffect(() => {
@@ -28,8 +28,10 @@ const ModalWindow: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
     initialValues: {
       firstName: "",
       lastName: "",
-      datetime: "",
+      date: "",
       experience: "",
+      gender: "",
+      profession: {}
     },
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(false);
@@ -47,20 +49,20 @@ const ModalWindow: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
         <p>Check all fields before click on Save button</p>
         <form autoComplete="off" onSubmit={handleSubmit}>
           <div>
-            {modalInputArray.map(({ name, type, label }) => (
-              <Input
-                key={label}
-                name={name}
-                type={type}
-                label={label}
-                errors={errors}
-                touched={touched}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                values={values}
-              />
-            ))}
+            {modalInputArray.map(({ name, type, label }) => !!type ? <Input
+              key={label}
+              name={name}
+              type={type}
+              label={label}
+              errors={errors}
+              touched={touched}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              values={values}
+            /> : <Select />)}
           </div>
+
+          {values.date && <Input {...conditionInput} errors={errors} touched={touched} onChange={handleChange} onBlur={handleBlur} values={values} />}
 
           <button type="submit">Create</button>
         </form>
