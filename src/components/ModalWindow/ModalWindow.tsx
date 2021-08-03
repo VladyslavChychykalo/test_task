@@ -1,66 +1,69 @@
-import { Form, Formik } from "formik";
+import { useEffect, useRef } from 'react'
+import { useFormik } from "formik";
+import { StyledOverlay, StyledModal } from './StyledModalWindow'
+import { modalInputArray } from '../../helpers/inputsArray'
 import Input from "../shared/Input";
 
-const inputArray = [
-  {
-    name: "firstName",
-    type: "text",
-    label: "First Name",
-  },
-  { name: "lastName", type: "text", label: "Last Name" },
-  //   { name: "primaryPhone", type: "tel", label: "Primary phone" },
-  //   { name: "secondaryPhone", type: "tel", label: "Secondary phone" },
-  { name: "date", type: "date", label: "Birthday" },
-  { name: "experience", type: "number", label: "Work Experience (years)" },
-];
+const ModalWindow: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress)
 
-const ModalWindow: React.FC = () => {
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [])
+
+  const overlayRef = useRef(null)
+
+  const handleKeyPress = (e: any) => {
+    if (e.code !== 'Escape') return;
+    closeModal()
+  }
+
+  const handleOverlayClick = (e: any) => {
+    const { current } = overlayRef
+    if (current && e.target !== current) return;
+    closeModal()
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      datetime: "",
+      experience: "",
+    },
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(false);
+      console.log(values);
+    },
+    // validate: (values) => validateForm(values)
+  });
+
+  const { errors, handleSubmit, handleChange, handleBlur, touched, values } = formik
+
   return (
-    <div className="backfrop">
-      <div>
+    <StyledOverlay ref={overlayRef} onClick={handleOverlayClick}>
+      <StyledModal>
         <h4>Add user</h4>
         <p>Check all fields before click on Save button</p>
-        <Formik
-          initialValues={{
-            firstName: "",
-            lastName: "",
-            datetime: "",
-            experience: "",
-          }}
-          validateOnChange={false}
-          validateOnBlur={false}
-          //   validate={(values) => validateForm(values)}
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(false);
-
-            console.log(values);
-            //   setTimeout(() => {
-            //     console.log(JSON.stringify(values, null, 2));
-            //     setSubmitting(false);
-            //   }, 400);
-          }}
-        >
-          {({ errors }) => {
-            return (
-              <Form autoComplete="off">
-                <div>
-                  {inputArray.map(({ name, type, label }) => (
-                    <Input
-                      key={label}
-                      name={name}
-                      type={type}
-                      label={label}
-                      errors={errors}
-                    />
-                  ))}
-                  <p>Gender</p>
-                </div>
-              </Form>
-            );
-          }}
-        </Formik>
-      </div>
-    </div>
+        <form autoComplete="off" onSubmit={handleSubmit}>
+          <div>
+            {modalInputArray.map(({ name, type, label }) => (
+              <Input
+                key={label}
+                name={name}
+                type={type}
+                label={label}
+                errors={errors}
+                touched={touched}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                values={values}
+              />
+            ))}
+          </div>
+        </form>
+      </StyledModal>
+    </StyledOverlay>
   );
 };
 

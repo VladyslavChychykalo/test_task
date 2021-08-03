@@ -1,10 +1,11 @@
 import GeneralInfo from "../components/GeneralInfo";
 import Workers from "../components/Workers";
 import ModalWindow  from "../components/ModalWindow";
-import { useRef, useState } from "react";
-import { TableElementsI } from '../utils/interfaces'
+import { useState } from "react";
+import { TableElementsI } from '../helpers/interfaces'
 
 const App: React.FC = () => {
+  const [isModalOpen, setModal] = useState(false)
   const [tableElements, setElements] = useState<TableElementsI[]>([
     {
       name: "Vlad",
@@ -15,24 +16,17 @@ const App: React.FC = () => {
     },
   ]);
 
-  const formRef = useRef<any>();
+  let submitMyForm: any = null;
 
-  const handleSubmit = () => {
-    if (formRef.current) {
-      formRef.current.handleSubmit();
+  const handleSubmitMyForm = (e: any) => {
+    if (submitMyForm) {
+      submitMyForm(e);
     }
   };
-  // let submitMyForm: any = null;
 
-  // const handleSubmitMyForm = (e: any) => {
-  //   if (submitMyForm) {
-  //     submitMyForm(e);
-  //   }
-  // };
-
-  // const bindSubmitForm = (submitForm: any) => {
-  //   submitMyForm = submitForm;
-  // };
+  const bindSubmitForm = (submitForm: any) => {
+    submitMyForm = submitForm;
+  };
 
   return (
     <div
@@ -44,14 +38,10 @@ const App: React.FC = () => {
         borderRadius: "5px",
       }}
     >
-      {/* <GeneralInfo bindSubmitForm={bindSubmitForm} />
+      <GeneralInfo bindSubmitForm={bindSubmitForm} />
+      <Workers tableElements={tableElements} openModal={() => setModal(true)} />
+      {isModalOpen && <ModalWindow closeModal={() => setModal(false)} />}
       <button type="button" onClick={handleSubmitMyForm}>
-        Check form
-      </button> */}
-      <GeneralInfo formRef={formRef} />
-      <Workers tableElements={tableElements} />
-      <ModalWindow />
-      <button type="button" onClick={handleSubmit}>
         Check form
       </button>
     </div>

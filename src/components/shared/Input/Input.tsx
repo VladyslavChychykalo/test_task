@@ -1,4 +1,3 @@
-import { useField } from "formik";
 import styled from "styled-components";
 
 const StyledInputContainer = styled.div`
@@ -24,7 +23,7 @@ const StyledInput = styled.input<{ isError: boolean }>`
   }
 
   &:focus {
-    border-bottom: ${({ isError }) => isError ? '2px solid red': '2px solid #3951b2'}
+    border-bottom: ${({ isError }) => isError ? '2px solid red' : '2px solid #3951b2'}
   }
 
   &::placeholder {
@@ -43,7 +42,7 @@ const StyledInput = styled.input<{ isError: boolean }>`
   &:not(:placeholder-shown) + label {
     font-size: 13px;
     top: -5px;
-    color: ${({ isError }) => isError ? 'red': '#3951b2'};
+    color: ${({ isError }) => isError ? 'red' : '#3951b2'};
   }
 
   &:not(:focus) + label {
@@ -61,29 +60,29 @@ const StyledLabel = styled.label`
   transition: all 0.3s ease-out;
 `;
 
+const StyledErrorMessage = styled.p`
+  color: red;
+  margin: 0;
+  margin-top: 5px;
+`
+
 const Input = (props: any) => {
-  const [{ onChange, ...rest }, meta] = useField(props);
-  const { label, type, name, errors } = props;
+  const { label, type, name, errors, onChange, onBlur, values, touched } = props;
 
   return (
     <StyledInputContainer>
       <StyledInput
-        {...rest}
+        name={name}
         placeholder=" "
         type={type}
-        isError={!!meta.error}
-        onChange={(e) => {
-          onChange(e);
-        }}
-        onFocus={() => {
-          if (errors.hasOwnProperty(name)) {
-            delete errors[name];
-          }
-        }}
+        isError={!!errors[name] && touched[name]}
+        onChange={onChange}
+        onBlur={onBlur}
+        value={values[name]}
       />
       <StyledLabel>{label}</StyledLabel>
-      {meta.touched && meta.error && (
-        <p style={{ color: "red" }}>{meta.error}</p>
+      {errors[name] && touched[name] && (
+        <StyledErrorMessage>{errors[name]}</StyledErrorMessage>
       )}
     </StyledInputContainer>
   );

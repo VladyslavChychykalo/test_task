@@ -1,7 +1,8 @@
-import { TableElementsI } from "../../utils/interfaces";
+import { TableElementsI } from "../../helpers/interfaces";
 
-const Workers: React.FC<{ tableElements: TableElementsI[] }> = ({
+const Workers: React.FC<{ tableElements: TableElementsI[], openModal: () => void }> = ({
   tableElements,
+  openModal
 }) => {
   return (
     <div>
@@ -32,7 +33,7 @@ const Workers: React.FC<{ tableElements: TableElementsI[] }> = ({
           )}
         </tbody>
       </table>
-      <button>Add</button>
+      <button onClick={openModal}>Add</button>
     </div>
   );
 };

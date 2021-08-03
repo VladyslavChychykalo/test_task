@@ -1,33 +1,7 @@
-import { Form, Formik } from "formik";
+import { useFormik } from "formik";
 import Input from "../shared/Input";
-
-const inputArray = [
-  {
-    name: "email",
-    type: "email",
-    label: "Email",
-  },
-  { name: "name", type: "text", label: "Name" },
-  { name: "primaryPhone", type: "tel", label: "Primary phone" },
-  { name: "secondaryPhone", type: "tel", label: "Secondary phone" },
-  { name: "description", type: "text", label: "Business description" },
-];
-
-interface FormValuesI {
-  email: string;
-  name: string;
-  primaryPhone: string;
-  secondaryPhone?: string;
-  description: string;
-}
-
-interface ErrorFromValueI {
-  email?: string;
-  name?: string;
-  primaryPhone?: string;
-  secondaryPhone?: string;
-  description?: string;
-}
+import { FormValuesI, ErrorFromValueI } from '../../helpers/interfaces'
+import { generalInputArray } from '../../helpers/inputsArray'
 
 const validateForm = (values: FormValuesI) => {
   const errors: ErrorFromValueI = {};
@@ -47,53 +21,46 @@ const validateForm = (values: FormValuesI) => {
   return errors;
 };
 
-const GeneralInfo: React.FC<{ formRef: any }> = ({ formRef }) => {
-  return (
-    <div>
-      <h3>General Info</h3>
-      <Formik
-        innerRef={formRef}
-        initialValues={{
-          name: "",
-          email: "",
-          primaryPhone: "",
-          secondaryPhone: "",
-          description: "",
-        }}
-        validateOnChange={false}
-        validateOnBlur={false}
-        validate={(values) => validateForm(values)}
-        onSubmit={(values, { setSubmitting }) => {
-          setSubmitting(false);
+const GeneralInfo: React.FC<{ bindSubmitForm: any }> = ({ bindSubmitForm }) => {
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      primaryPhone: '',
+      secondaryPhone: '',
+      description: ''
+    },
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(false);
+      console.log(values);
+    },
+    validate: (values) => validateForm(values)
+  });
 
-          console.log(values);
-          //   setTimeout(() => {
-          //     console.log(JSON.stringify(values, null, 2));
-          //     setSubmitting(false);
-          //   }, 400);
-        }}
-      >
-        {({ errors, submitForm }) => {
-          //   bindSubmitForm(submitForm);
-          return (
-            <Form autoComplete="off">
-              <div>
-                {inputArray.map(({ name, type, label }) => (
-                  <Input
-                    key={label}
-                    name={name}
-                    type={type}
-                    label={label}
-                    errors={errors}
-                  />
-                ))}
-              </div>
-            </Form>
-          );
-        }}
-      </Formik>
-    </div>
-  );
+  const { errors, handleSubmit, handleChange, handleBlur, touched, values, submitForm } = formik
+
+  bindSubmitForm(submitForm);
+
+  return <div>
+    <h3>General Info</h3>
+    <form autoComplete="off" onSubmit={handleSubmit}>
+      <div>
+        {generalInputArray.map(({ name, type, label }) => (
+          <Input
+            key={label}
+            name={name}
+            type={type}
+            label={label}
+            errors={errors}
+            touched={touched}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            values={values}
+          />
+        ))}
+      </div>
+    </form>
+  </div>
 };
 
 export default GeneralInfo;
